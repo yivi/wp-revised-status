@@ -3,7 +3,7 @@ Contributors: yivi
 Tags: revisions, publishing-status
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: GPLv2 or later
 License URI: http//www.gnu.org/licenses/gpl-2.0.html
 Domain Path: /lang
@@ -73,6 +73,9 @@ An entry will be created on your post_meta for each revision, that will be delet
 2. Options page to enable publishing status history for registered post types.
 
 == Changelog ==
+
+= 0.6.2 =
+* Minor packaging fixes
 
 = 0.6 =
 * Initial public release

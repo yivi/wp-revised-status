@@ -1,6 +1,6 @@
 {
   "name": "wp-revised-status",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Saves the publihed status (publish, draft, pending) alongside revision history.",
   "devDependencies": {
     "gulp": "^3.9.0",
