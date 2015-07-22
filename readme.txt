@@ -1,13 +1,14 @@
-=== Revised Status ===
+=== WP Revised Status ===
 Contributors: yivi
 Tags: revisions, publishing-status
 Requires at least: 4.0
 Tested up to: 4.2.2
 Stable tag: 0.6.2
+Text Domain: wp-revised-status
+Domain Path: /lang
 License: GPLv2 or later
 License URI: http//www.gnu.org/licenses/gpl-2.0.html
-Domain Path: /lang
-Text Domain: wp-revised-status
+
 
 Saves and restores publishing status in post revisions, replacing the default Revisions metabox with a modified metabox with pub status.
 
@@ -66,6 +67,15 @@ Github repository at plugin at http://github.com/yivi/myplugin
 
 = Where is published information saved? =
 An entry will be created on your post_meta for each revision, that will be deleted whenever a revision is deleted.
+
+== Are custom post types supported? ==
+Any post type properly registered is supported. You need to enable support for any post type either through the settings page or using the appropriate filters.
+
+== Are custom post statuses supported? ==
+Any custom post type registered should work... but let me know if it doesn't. :)
+
+== Does this work with PHP < 5.3? ==
+No, sorry. PHP5.3 at a minimum, but at least 5.4 is recommended.
 
 == Screenshots ==
 

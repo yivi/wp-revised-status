@@ -72,14 +72,14 @@ class Options {
 		 *
 		 * @param boolean $var True to disable the options page.
 		 */
-		if ( apply_filters( Main::slug . '_disable-options', false ) ) {
+		if ( apply_filters( WP_REVSTATUS_SLUG . '_disable-options', false ) ) {
 			return;
 		} else {
 			add_options_page(
-				__( 'Publish Status Revisions Options', Main::slug ),
-				__( 'Published Status Revisions', Main::slug ),
+				__( 'Publish Status Revisions Options', WP_REVSTATUS_SLUG ),
+				__( 'Published Status Revisions', WP_REVSTATUS_SLUG ),
 				'manage_options',
-				Main::settings_slug,
+				WP_REVSTATUS_SETTINGS,
 				[ $this->ov, 'render_options_page' ] );
 		}
 	}
@@ -90,21 +90,21 @@ class Options {
 	 */
 	public function register_settings() {
 
-		if ( apply_filters( Main::slug . '_disable-options', false ) ) {
+		if ( apply_filters( WP_REVSTATUS_SLUG . '_disable-options', false ) ) {
 			return;
 		}
 
 
 		add_settings_section(
 			$section_iter = 'revised_status_posttypes',
-			__( 'Enable or disable publishing status revisions for your activated post types', Main::slug ),
+			__( 'Enable or disable publishing status revisions for your activated post types', WP_REVSTATUS_SLUG ),
 			[ $this->ov, 'render_section_posttypes' ],
-			Main::settings_slug
+			WP_REVSTATUS_SETTINGS
 		);
 
 		register_setting(
-			Main::settings_slug,                        // option group
-			Main::settings_slug,                        // option id
+			WP_REVSTATUS_SETTINGS,                        // option group
+			WP_REVSTATUS_SETTINGS,                        // option id
 			[ $this, 'sanitize_values' ]                 // sanitize callback
 		);
 
@@ -118,11 +118,11 @@ class Options {
 			}
 			$this->add_settings_field(
 				$field_id = 'revise_' . $post_type->name,
-				__( 'Track', Main::slug ) . " {$post_type->label}",
+				__( 'Track', WP_REVSTATUS_SLUG ) . " {$post_type->label}",
 				[ $this->ov, 'render_checkbox' ],
 				'checkbox',
 				[ 'id' => $field_id ],
-				Main::settings_slug,
+				WP_REVSTATUS_SETTINGS,
 				$section_iter
 			);
 		}
@@ -186,10 +186,10 @@ class Options {
 		$section = null
 	) {
 		if ( $page == null ) {
-			$page = Main::settings_slug;
+			$page = WP_REVSTATUS_SETTINGS;
 		}
 		if ( $section == null ) {
-			$section = Main::settings_slug;
+			$section = WP_REVSTATUS_SETTINGS;
 		}
 
 		add_settings_field(
@@ -213,7 +213,7 @@ class Options {
 	 */
 	public function get_options() {
 
-		$option = get_option( Main::settings_slug );
+		$option = get_option( WP_REVSTATUS_SETTINGS );
 		$option = empty( $option ) ? [ ] : $option;
 
 		$enabled_inputs  = $this->getEnabled();
@@ -246,7 +246,7 @@ class Options {
 	 * @return mixed|void
 	 */
 	public function getEnabled() {
-		return apply_filters( Main::slug . '_tracked-posttypes', $this->enabled );
+		return apply_filters( WP_REVSTATUS_SLUG . '_tracked-posttypes', $this->enabled );
 	}
 
 	/**
@@ -254,6 +254,6 @@ class Options {
 	 * @return mixed|void
 	 */
 	public function getDisabled() {
-		return apply_filters( Main::slug . '_untracked-posttypes', $this->disabled );
+		return apply_filters( WP_REVSTATUS_SLUG . '_untracked-posttypes', $this->disabled );
 	}
 }

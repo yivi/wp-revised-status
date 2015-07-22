@@ -1,8 +1,6 @@
 <?php
 namespace RevisedStatus\View;
 
-use RevisedStatus\Controller\Main;
-
 /**
  * Class Options
  *
@@ -26,13 +24,13 @@ class Options {
 	public function render_options_page() {
 		?>
 		<div class="wrap">
-		<h2><?php _e( 'Publishing status tracking options', Main::slug ); ?></h2>
+		<h2><?php _e( 'Publishing status tracking options', WP_REVSTATUS_SLUG ); ?></h2>
 
 		<form action="options.php" method="post">
 			<?php
-			settings_fields( Main::settings_slug );
-			do_settings_sections( Main::settings_slug );
-			submit_button( __( 'Save', Main::slug ) );
+			settings_fields( WP_REVSTATUS_SETTINGS );
+			do_settings_sections( WP_REVSTATUS_SETTINGS );
+			submit_button( __( 'Save', WP_REVSTATUS_SLUG ) );
 			?>
 		</form>
 		<?php
@@ -54,7 +52,7 @@ class Options {
 		// If there are posttypes enabled by use of the appropriate hook display a notice.
 		if ( ! empty( $enabled ) ) {
 			$types = [ ];
-			echo "<div id='message' class='updated'>" . __( 'Attention: Tracking for the following post-types has been enabled from a theme or a plugin:', Main::slug );
+			echo "<div id='message' class='updated'>" . __( 'Attention: Tracking for the following post-types has been enabled from a theme or a plugin:', WP_REVSTATUS_SLUG );
 			foreach ( $enabled as $key => $val ) {
 
 				if ( ( $post_type = get_post_type_object( $key ) ) !== null ) {
@@ -69,7 +67,7 @@ class Options {
 		// If there are posttypes enabled by use of the appropriate hook display a warning.
 		if ( ! empty( $disabled ) ) {
 
-			echo "<div id='message' class='error'>" . __( 'Warning: Tracking for the following post-types has been disabled from a theme or a plugin:', Main::slug );
+			echo "<div id='message' class='error'>" . __( 'Warning: Tracking for the following post-types has been disabled from a theme or a plugin:', WP_REVSTATUS_SLUG );
 			$types = [ ];
 			foreach ( $disabled as $key => $val ) {
 
@@ -95,11 +93,11 @@ class Options {
 			return;
 		}
 
-		$options = get_option( Main::settings_slug );
+		$options = get_option( WP_REVSTATUS_SETTINGS );
 
 		$checked = checked( isset( $options[ $id ] ), true, false );
 
-		echo "<input type='checkbox' id='" . Main::settings_slug . "' name='" . Main::settings_slug
+		echo "<input type='checkbox' id='" . WP_REVSTATUS_SETTINGS . "' name='" . WP_REVSTATUS_SETTINGS
 		     . "[$id]' size='40' value='1' $checked />";
 	}
 

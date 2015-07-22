@@ -2,8 +2,6 @@
 
 namespace RevisedStatus\View;
 
-use RevisedStatus\Controller\Main;
-
 /**
  * Class RevisionMetabox
  *
@@ -43,7 +41,7 @@ class RevisionMetabox {
 		}
 
 		add_meta_box( 'wpsr_status_revised',
-			__( 'Revisions (with publication status history)', Main::slug ),
+			__( 'Revisions (with publication status history)', WP_REVSTATUS_SLUG ),
 			[ $this, 'render_metabox' ],
 			null, // todos los posttypes
 			'normal',
@@ -89,7 +87,7 @@ class RevisionMetabox {
 			$rows .= "\t<li>" . $this->render_title( $revision ) . "</li>\n";
 		}
 
-		echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.', Main::slug ) . "</p></div>\n";
+		echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.', WP_REVSTATUS_SLUG ) . "</p></div>\n";
 
 		echo "<ul class='post-revisions hide-if-no-js'>\n";
 		echo $rows;
@@ -147,7 +145,7 @@ class RevisionMetabox {
 		$rev_status = $rm->get_status( $revision->ID );
 		$rev_status = get_post_status_object( $rev_status );
 
-		$rev_status = isset( $rev_status->label ) ? $rev_status->label : __( 'Not tracked', Main::slug );
+		$rev_status = isset( $rev_status->label ) ? $rev_status->label : __( 'Not tracked', WP_REVSTATUS_SLUG );
 
 		return $revision_date_author . " - [$rev_status]";
 	}

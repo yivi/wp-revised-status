@@ -17,6 +17,15 @@ class RevisionManager {
 	 */
 	static $instance;
 
+	public function setup() {
+
+		add_filter( 'wp_save_post_revision_post_has_changed', [
+			$this,
+			'compare_statuses'
+		], 3, 20 );
+		add_action( '_wp_put_post_revision', [ $this, 'maybe_save_status_in_meta' ] );
+		add_action( 'wp_restore_post_revision', [ $this, 'restore_revision' ], 2, 20 );
+	}
 	/**
 	 * Updates the status for post revision
 	 *

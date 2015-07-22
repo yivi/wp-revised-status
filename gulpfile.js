@@ -42,7 +42,6 @@ var bumpReadme = function (version, type) {
 };
 
 
-
 function inc(importance) {
 
     var pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
@@ -57,15 +56,20 @@ function inc(importance) {
     readme = gulp.src('readme.txt')
         .pipe(replace('Stable tag: ' + version, 'Stable tag: ' + nextV))
         .pipe(gulp.dest('./'))
-        .pipe(readme())
+        .pipe(readme({
+            screenshot_url: 'https://ps.w.org/revised-publishing-status/assets/{screenshot}.{ext}'
+        }))
         .pipe(gulp.dest('./'));
 
     json = gulp.src('package.json')
         .pipe(bump({type: importance}))
         .pipe(gulp.dest('./'));
 
+    plugin = gulp.src('init.php')
+        .pipe(replace('Version: ' + version, 'Version: ' + nextV))
+        .pipe(gulp.dest('./'));
 
-    readmeme = gulp.src([ 'README.md', 'readme.txt']);
+    readmeme = gulp.src(['README.md', 'readme.txt']);
 
     return merge([json, readmeme])
         .pipe(git.add())
