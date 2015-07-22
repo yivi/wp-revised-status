@@ -77,6 +77,12 @@ function inc(importance) {
 
 }
 
+function tagSvn() {
+    // elijo todos los ficheros desde el trunk
+    // excluyendo .git, assets, node_modules, .idea
+
+}
+
 gulp.task('patch', function () {
     return inc('patch');
 });
