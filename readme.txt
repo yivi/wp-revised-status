@@ -3,7 +3,7 @@ Contributors: yivi
 Tags: revisions, publishing-status
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 0.6.2
+Stable tag: 0.7.0
 Text Domain: wp-revised-status
 Domain Path: /lang
 License: GPLv2 or later
