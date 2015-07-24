@@ -20,7 +20,7 @@ This plugin enables saving the post status ('published', 'draft', 'pending', etc
 
 = Available Hooks =
 
-**`wp-revised-status_tracked-posttypes`**
+`wp-revised-status_tracked-posttypes`
 You can use this to set up posttypes to track without using the options page. Your function should return an associative array.
 
 E.g.: 
@@ -34,7 +34,7 @@ E.g.:
  }
 `
 
-**`wp-revised-status_untracked-posttypes`**
+`wp-revised-status_untracked-posttypes`
 Exactly the inverse of the previous hook. ** What you disable on this hook takes precedence to what you enable in the `tracked_posttypes` one.
 
 E.g.:
@@ -48,7 +48,7 @@ function my_plugin_no_history( $disabled ) {
 add_filter( 'wp-revised-status_untracked-posttypes', 'my_plugin_no_history' );
 `
 
-**`wp-status-revised_disable-options`**
+`wp-status-revised_disable-options`
 If you are using the plugin inside a theme or another plugin, and want to disable the options page, you can just do:
 
 `add_filter( 'wp-status-revised_disable-options', '__return_true' )`
@@ -56,7 +56,7 @@ If you are using the plugin inside a theme or another plugin, and want to disabl
 
 
 = Github =
-Github repository at plugin at http://github.com/yivi/myplugin
+Github repository at plugin at https://github.com/yivi/wp-revised-status
 
 == Installation ==
 
@@ -83,6 +83,9 @@ No, sorry. PHP5.3 at a minimum, but at least 5.4 is recommended.
 2. Options page to enable publishing status history for registered post types.
 
 == Changelog ==
+
+= 0.7.0 =
+* Minor refactoring of main plugin classes
 
 = 0.6.2 =
 * Minor packaging fixes
