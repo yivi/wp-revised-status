@@ -173,13 +173,13 @@ class Options {
 	/**
 	 * Helper function for add_settings_field, so we save the configuration for each input.
 	 *
-	 * @param        $setting_name
-	 * @param        $setting_label
-	 * @param        $render_callback
-	 * @param string $type
-	 * @param array $callback_args
-	 * @param null $page
-	 * @param null $section
+	 * @param string   $setting_name
+	 * @param string   $setting_label
+	 * @param callable $render_callback
+	 * @param string   $type
+	 * @param array    $callback_args
+	 * @param null     $page
+	 * @param null     $section
 	 */
 	public function add_settings_field(
 		$setting_name, $setting_label, $render_callback, $type = 'text', $callback_args = [ ], $page = null,
