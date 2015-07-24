@@ -71,7 +71,7 @@ function inc(importance) {
 
     readmeme = gulp.src(['README.md', 'readme.txt']);
 
-    return merge([json, readmeme])
+    return merge([json, readmeme, plugin])
         .pipe(git.add())
         // commit the changed version number
         .pipe(git.commit('bump to v' + nextV))
@@ -81,11 +81,13 @@ function inc(importance) {
 
 }
 
-function tagSvn() {
-    // elijo todos los ficheros desde el trunk
-    // excluyendo .git, assets, node_modules, .idea
-
-}
+gulp.task('convertReadme', function () {
+    readme = gulp.src('readme.txt')
+        .pipe(readme({
+            screenshot_url: 'https://ps.w.org/revised-publishing-status/assets/{ext}'
+        }))
+        .pipe(gulp.dest('./'));
+});
 
 gulp.task('patch', function () {
     return inc('patch');
