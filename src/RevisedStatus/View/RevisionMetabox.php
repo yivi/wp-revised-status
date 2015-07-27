@@ -36,20 +36,22 @@ class RevisionMetabox {
 
 		$screen = get_current_screen();
 
-		if ( ! isset( $options[ 'revise_' . $screen->id ] ) ) {
-			return false;
+		if ( isset( $options[ 'revise_' . $screen->id ] )
+		     || ( $options['track_all_posttypes'] && ! in_array( $screen->id, $options['disabled'] ) )
+		) {
+			add_meta_box( 'wpsr_status_revised',
+				__( 'Revisions (with publication status history)', WP_REVSTATUS_SLUG ),
+				[ $this, 'render_metabox' ],
+				null, // todos los posttypes
+				'normal',
+				'default' );
+
+			remove_meta_box( 'revisionsdiv', null, 'normal' );
+
+			return true;
 		}
 
-		add_meta_box( 'wpsr_status_revised',
-			__( 'Revisions (with publication status history)', WP_REVSTATUS_SLUG ),
-			[ $this, 'render_metabox' ],
-			null, // todos los posttypes
-			'normal',
-			'default' );
-
-		remove_meta_box( 'revisionsdiv', null, 'normal' );
-
-		return true;
+		return false;
 	}
 
 	/**
@@ -60,7 +62,7 @@ class RevisionMetabox {
 	 *
 	 *
 	 * @param int|WP_Post $post_id Optional. Post ID or WP_Post object. Default is global $post.
-	 * @param string $type 'all' (default), 'revision' or 'autosave'
+	 * @param string      $type    'all' (default), 'revision' or 'autosave'
 	 *
 	 * @return null
 	 */
@@ -87,7 +89,8 @@ class RevisionMetabox {
 			$rows .= "\t<li>" . $this->render_title( $revision ) . "</li>\n";
 		}
 
-		echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.', WP_REVSTATUS_SLUG ) . "</p></div>\n";
+		echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.', WP_REVSTATUS_SLUG )
+		     . "</p></div>\n";
 
 		echo "<ul class='post-revisions hide-if-no-js'>\n";
 		echo $rows;
@@ -98,7 +101,7 @@ class RevisionMetabox {
 	 * Retrieve formatted date timestamp of a revision (linked to that revisions's page).
 	 *
 	 * @param int|object $revision Revision ID or revision object.
-	 * @param bool $link Optional, default is true. Link to revisions's page?
+	 * @param bool       $link     Optional, default is true. Link to revisions's page?
 	 *
 	 * @return string gravatar, user, i18n formatted datetimestamp or localized 'Current Revision'.
 	 */

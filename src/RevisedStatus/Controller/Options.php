@@ -40,15 +40,19 @@ class Options {
 	 */
 	private $disabled;
 
+	private $track_all;
+
 	/**
 	 * Basic constructor
 	 *
 	 */
 	public function __construct() {
-		$this->ov       = \RevisedStatus\View\Options::getInstance();
-		$this->inputs   = [ ];
-		$this->enabled  = [ ];
-		$this->disabled = [ ];
+		$this->ov     = \RevisedStatus\View\Options::getInstance();
+		$this->inputs = [ ];
+
+		$this->enabled   = null;
+		$this->disabled  = null;
+		$this->track_all = null;
 	}
 
 	/**
@@ -111,6 +115,16 @@ class Options {
 		$args = [
 			'public' => true,
 		];
+
+		$this->add_settings_field(
+			$field_id = 'track_all_posttypes',
+			__( 'Track all registered (versioned) posttypes', WP_REVSTATUS_SLUG ),
+			[ $this->ov, 'render_checkbox' ],
+			'checkbox',
+			[ 'id' => $field_id ],
+			WP_REVSTATUS_SETTINGS,
+			$section_iter
+		);
 
 		foreach ( get_post_types( $args, 'objects' ) as $post_type ) {
 			if ( ! post_type_supports( $post_type->name, 'revisions' ) ) {
@@ -201,6 +215,8 @@ class Options {
 			$callback_args
 		);
 
+		// we save input configuration in property so we can use later or when
+		// going through the render calback
 		$this->inputs[ $setting_name ] = [ 'type' => $type ];
 
 	}
@@ -219,6 +235,8 @@ class Options {
 		$enabled_inputs  = $this->getEnabled();
 		$disabled_inputs = $this->getDisabled();
 
+		// We go through all the posttypes enabled by filter, and add them to
+		// the array containing the enabled posttypes
 		if ( ! empty( $enabled_inputs ) ) {
 			foreach ( $enabled_inputs as $key => $val ) {
 				$enabled_inputs[ 'revise_' . $key ] = 1;
@@ -227,13 +245,26 @@ class Options {
 			$option = array_merge( $option, $enabled_inputs );
 		}
 
+
+		// Now we go through the enabled  ones, and if the key is found in the
+		// disabled array, it gets removed.
+		// Hence, the disabling filter has priority over the settings page and
+		// the posttypes disabled by filter
 		if ( ! empty( $disabled_inputs ) ) {
 			foreach ( array_keys( $option ) as $key ) {
 				$cleanKey = str_replace( 'revise_', '', $key );
 				if ( $disabled_inputs[ $cleanKey ] ) {
 					unset( $option[ $key ] );
+					$option['disabled'][] = $cleanKey;
 				}
 			}
+
+		}
+
+		// finally we ge the the trackAll property, which defaults to false
+		// again, filter overrides ssettings page
+		if ( $this->getTrackAll() !== null ) {
+			$option['track_all_posttypes'] = $this->getTrackAll();
 
 		}
 
@@ -246,14 +277,36 @@ class Options {
 	 * @return mixed|void
 	 */
 	public function getEnabled() {
-		return apply_filters( WP_REVSTATUS_SLUG . '_tracked-posttypes', $this->enabled );
+		if ( $this->enabled === null ) {
+			$this->enabled = apply_filters( WP_REVSTATUS_SLUG . '_tracked-posttypes', [ ] );
+		}
+
+		return $this->enabled;
 	}
 
 	/**
 	 * Gets the disabled array through the _untracked-posttypes filter
+	 *
 	 * @return mixed|void
 	 */
 	public function getDisabled() {
-		return apply_filters( WP_REVSTATUS_SLUG . '_untracked-posttypes', $this->disabled );
+		if ( $this->disabled === null ) {
+			$this->disabled = apply_filters( WP_REVSTATUS_SLUG . '_untracked-posttypes', [ ] );
+		}
+
+		return $this->disabled;
+	}
+
+	/**
+	 * Gets the state of the 'show all' property.
+	 *
+	 * @return bool|mixed|void
+	 */
+	public function getTrackAll() {
+		if ( $this->track_all === null ) {
+			$this->track_all = apply_filters( WP_REVSTATUS_SLUG . '_track-all', null );
+		}
+
+		return $this->track_all;
 	}
 }

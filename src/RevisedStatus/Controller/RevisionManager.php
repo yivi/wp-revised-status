@@ -19,13 +19,11 @@ class RevisionManager {
 
 	public function setup() {
 
-		add_filter( 'wp_save_post_revision_post_has_changed', [
-			$this,
-			'compare_statuses'
-		], 3, 20 );
+		add_filter( 'wp_save_post_revision_post_has_changed', [ $this, 'compare_statuses' ], 3, 20 );
 		add_action( '_wp_put_post_revision', [ $this, 'maybe_save_status_in_meta' ] );
 		add_action( 'wp_restore_post_revision', [ $this, 'restore_revision' ], 2, 20 );
 	}
+
 	/**
 	 * Updates the status for post revision
 	 *
@@ -65,7 +63,9 @@ class RevisionManager {
 	public function compare_statuses( $post_has_changed, $last_revision, $post ) {
 		$options = \RevisedStatus\Controller\Options::getInstance()->get_options();
 
-		if ( isset( $options[ 'revise_' . $post->post_type ] ) ) {
+		if ( isset( $options[ 'revise_' . $post->post_type ] )
+		     || ( $options['track_all_posttypes'] && ! in_array( $post->post_type, $options['disabled'] ) )
+		) {
 
 			$last_status    = $this->get_status( $last_revision->ID );
 			$current_status = $post->post_status;
@@ -91,7 +91,9 @@ class RevisionManager {
 		$options = \RevisedStatus\Controller\Options::getInstance()->get_options();
 
 
-		if ( isset( $options[ 'revise_' . $post->post_type ] ) ) {
+		if ( isset( $options[ 'revise_' . $post->post_type ] )
+		     || ( $options['track_all_posttypes'] && ! in_array( $post->post_type, $options['disabled'] ) )
+		) {
 
 			$this->update_status( $revision_id, $current_status );
 		}
@@ -110,7 +112,9 @@ class RevisionManager {
 
 		$post = get_post();
 
-		if ( isset( $options[ 'revise_' . $post->post_type ] ) ) {
+		if ( isset( $options[ 'revise_' . $post->post_type ] )
+		     || ( $options['track_all_posttypes'] && ! in_array( $post->post_type, $options['disabled'] ) )
+		) {
 
 			$status = $this->get_status( $revision_id );
 			if ( ! empty( $status ) ) {
