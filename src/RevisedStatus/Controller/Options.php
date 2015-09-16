@@ -272,29 +272,55 @@ class Options {
 	}
 
 	/**
-	 * Gets the enabled array through the _tracked-posttypes filter
+	 * Gets the enabled array through the _tracked-posttypes filter, or checks if a particular post_type was
+	 * enabled throuch wp filters.
 	 *
-	 * @return mixed|void
+	 * @param string $post_type Post type to check if it was enabled through the filter.
+	 *
+	 * @return mixed|void|boolean
 	 */
-	public function getEnabled() {
-		if ( $this->enabled === null ) {
+	public function getEnabled( $post_type = false ) {
+		if ( null === $this->enabled ) {
 			$this->enabled = apply_filters( WP_REVSTATUS_SLUG . '_tracked-posttypes', [ ] );
 		}
 
-		return $this->enabled;
+		if ( $post_type && is_array( $this->enabled ) ) {
+			// if we receive a post type string, we are only checking that particular posttype
+			$clean_posttype = preg_replace( '|^revise_|', '', $post_type );
+			$in_array       = in_array( $clean_posttype, array_keys( $this->enabled ) );
+
+			return $in_array;
+		} else {
+			// otherwise we return all the enabled posttypes as an array
+
+			return $this->enabled;
+		}
+
+
 	}
 
 	/**
-	 * Gets the disabled array through the _untracked-posttypes filter
+	 * Gets the disabled array through the _untracked-posttypes filter or checks if a particular post_type was
+	 * disabled throuch wp filters.
 	 *
-	 * @return mixed|void
+	 * @param string $post_type Post type to check if it was disabled through the filter.
+	 *
+	 * @return mixed|void|boolean
 	 */
-	public function getDisabled() {
-		if ( $this->disabled === null ) {
+	public function getDisabled( $post_type = false ) {
+		if ( null === $this->disabled ) {
 			$this->disabled = apply_filters( WP_REVSTATUS_SLUG . '_untracked-posttypes', [ ] );
 		}
 
-		return $this->disabled;
+		if ( $post_type && is_array( $this->disabled ) ) {
+			$clean_posttype = preg_replace( '|^revise_|', '', $post_type );
+			$in_array       = in_array( $clean_posttype, array_keys( $this->disabled ) );
+
+			return $in_array;
+		} else {
+			return $this->disabled;
+		}
+
 	}
 
 	/**

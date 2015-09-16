@@ -45,10 +45,10 @@ class Options {
 	 * @param $section
 	 */
 	public function render_section_posttypes( $section ) {
-		$opt_controller = \RevisedStatus\Controller\Options::getInstance();
+		$control = \RevisedStatus\Controller\Options::getInstance();
 
-		$enabled  = $opt_controller->getEnabled();
-		$disabled = $opt_controller->getDisabled();
+		$enabled  = $control->getEnabled();
+		$disabled = $control->getDisabled();
 
 		// If there are posttypes enabled by use of the appropriate hook display a notice.
 		if ( ! empty( $enabled ) ) {
@@ -98,13 +98,34 @@ class Options {
 			return;
 		}
 
-		$options = get_option( WP_REVSTATUS_SETTINGS );
+		$control  = \RevisedStatus\Controller\Options::getInstance();
+		$settings = get_option( WP_REVSTATUS_SETTINGS );
 
-		$checked = checked( isset( $options[ $id ] ), true, false );
+		$hook_enabled  = $control->getEnabled( $id );
+		$hook_disabled = $control->getDisabled( $id );
+
+		$is_hooked   = $hook_disabled || $hook_enabled;
+		$all_options = $control->getTrackAll() && 'track_all_posttypes' === $id;
+
+		$checked  = checked( isset( $settings[ $id ] ), true, false );
+		$disabled = $is_hooked || $all_options ? 'disabled="disabled"' : '';
+
+		$memo = '';
+		if ( $hook_enabled || $all_options ) {
+			$memo = __( 'Warning, this setting has been activated by a plugin hook.' );
+		}
+		if ( $hook_disabled ) {
+			$memo = __( "Warning, tracking of this post type has been disabled by a plugin hook." );
+		}
 
 		echo "<input type='checkbox' id='" . WP_REVSTATUS_SETTINGS . "' name='"
 		     . WP_REVSTATUS_SETTINGS
-		     . "[$id]' size='40' value='1' $checked />";
+		     . "[$id]' size='40' value='1' $checked $disabled /> $memo";
+
+		if ( $checked && $disabled || $all_options ) {
+			echo "<input type='hidden' value='1' name='" . WP_REVSTATUS_SETTINGS . "[$id]' >\n";
+		}
+
 	}
 
 
