@@ -24,16 +24,59 @@ class Options {
 	public function render_options_page() {
 		?>
 		<div class="wrap">
-		<h2><?php _e( 'Publishing status tracking options',
-				WP_REVSTATUS_SLUG ); ?></h2>
+			<h2><?php _e( 'Publishing status tracking options',
+					WP_REVSTATUS_SLUG ); ?></h2>
 
-		<form action="options.php" method="post">
-			<?php
-			settings_fields( WP_REVSTATUS_SETTINGS );
-			do_settings_sections( WP_REVSTATUS_SETTINGS );
-			submit_button( __( 'Save', WP_REVSTATUS_SLUG ) );
-			?>
-		</form>
+			<form action="options.php" method="post">
+				<?php
+				settings_fields( WP_REVSTATUS_SETTINGS );
+				do_settings_sections( WP_REVSTATUS_SETTINGS );
+				submit_button( __( 'Save', WP_REVSTATUS_SLUG ) );
+				?>
+			</form>
+
+		</div>
+		<div class="wrap">
+			<h3><?php _e( 'Filter Hooks available', WP_REVSTATUS_SLUG ); ?></h3>
+
+			<p><?php _e( 'Options set via hooks supersede options chosen in this page', WP_REVSTATUS_SLUG ); ?></p>
+
+			<dl>
+				<dt><code>wp-revised-status_track-all</code></dt>
+				<dd><?php _e( 'Sets up tracking for all available versioned post-types. Return <em>true</em> to activate.',
+						WP_REVSTATUS_SLUG ); ?></dd>
+				<dt><code>wp-revised-status_tracked-posttypes</code></dt>
+				<dd>
+					<p><?php _e( 'Return an associative array in this filter to activate tracking to your chosen post types. e.g:',
+							WP_REVSTATUS_SLUG ); ?></p>
+
+					<p>E.g.: <code>
+							add_filter( 'wp-revised-status_tracked-posttypes', function ( $i ) {
+							$i['post'] = 1;
+
+							return $i;
+							} );
+						</code>
+					</p>
+
+					<p><?php _e( 'Redundant with the previous filter', WP_REVSTATUS_SLUG ); ?></p></dd>
+				<dt><code>wp-revised-status_untracked-posttypes</code></dt>
+				<dd>
+					<p><?php _e( 'Return an associative array in this filter to disable tracking for your chosen post types. e.g:',
+							WP_REVSTATUS_SLUG ); ?></p>
+
+					<p>E.g.: </p>
+						<pre><code>add_filter( 'wp-revised-status_tracked-posttypes', 'my_theme_disable_tracking' );
+function my_theme_disable_tracking($i) {
+	$i['post'] = 1;
+	return $i;
+}</code></pre>
+					<p><?php _e( 'Trumps all other options or filters', WP_REVSTATUS_SLUG ); ?></p>
+				</dd>
+			</dl>
+
+
+		</div>
 		<?php
 	}
 
@@ -112,10 +155,10 @@ class Options {
 
 		$memo = '';
 		if ( $hook_enabled || $all_options ) {
-			$memo = __( 'Warning, this setting has been activated by a plugin hook.' );
+			$memo = __( 'Warning, this setting has been activated by a plugin hook.', WP_REVSTATUS_SLUG );
 		}
 		if ( $hook_disabled ) {
-			$memo = __( "Warning, tracking of this post type has been disabled by a plugin hook." );
+			$memo = __( "Warning, tracking of this post type has been disabled by a plugin hook.", WP_REVSTATUS_SLUG );
 		}
 
 		echo "<input type='checkbox' id='" . WP_REVSTATUS_SETTINGS . "' name='"
