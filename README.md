@@ -20,38 +20,38 @@ This plugin enables saving the post status ('published', 'draft', 'pending', etc
 
 ### Available Hooks ###
 
-`wp-revised-status_tracked-posttypes`
+```wp-revised-status_tracked-posttypes```
 You can use this to set up posttypes to track without using the options page. Your function should return an associative array.
 
 E.g.: 
 
-`
+```
  add_filter( 'wp-revised-status_tracked-posttypes', function( $enabled ) {
  $enabled['post'] = 1;
  $enabled['page'] = 1;
  
  return $enabled;
  }
-`
+```
 
-`wp-revised-status_untracked-posttypes`
-Exactly the inverse of the previous hook. ** What you disable on this hook takes precedence to what you enable in the `tracked_posttypes` one.
+```wp-revised-status_untracked-posttypes```
+Exactly the inverse of the previous hook. ** What you disable on this hook takes precedence to what you enable in the ```tracked_posttypes``` one.
 
 E.g.:
 
-`
+```
 function my_plugin_no_history( $disabled ) {
     $disabled['page'] = 1;
     
     return $disabled;
 }
 add_filter( 'wp-revised-status_untracked-posttypes', 'my_plugin_no_history' );
-`
+```
 
-`wp-status-revised_disable-options`
+```wp-status-revised_disable-options```
 If you are using the plugin inside a theme or another plugin, and want to disable the options page, you can just do:
 
-`add_filter( 'wp-status-revised_disable-options', '__return_true' )`
+```add_filter( 'wp-status-revised_disable-options', '__return_true' )```
 
 
 ### Github ###
@@ -59,7 +59,7 @@ Github repository at plugin at https://github.com/yivi/wp-revised-status
 
 ## Installation ##
 
-1. Unzip plugin's files in a folder inside `/wp-content/plugins/` directory
+1. Unzip plugin's files in a folder inside ```/wp-content/plugins/``` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 ## Frequently Asked Questions ##
