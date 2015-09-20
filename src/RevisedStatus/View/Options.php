@@ -43,21 +43,24 @@ class Options {
 
 			<dl>
 				<dt><code>wp-revised-status_track-all</code></dt>
-				<dd><?php _e( 'Sets up tracking for all available versioned post-types. Return <em>true</em> to activate.',
-						WP_REVSTATUS_SLUG ); ?></dd>
+				<dd><p><?php _e( 'Sets up tracking for all available versioned post-types. Return <em>true</em> to activate.',
+						WP_REVSTATUS_SLUG ); ?></p>
+				<p>E.g.:</p>
+					<pre class="prettyprint linenums"><code class="lang-php">
+add_filter( 'wp-revised-status_track-all', '__return_true' );</code></pre>
+				</dd>
 				<dt><code>wp-revised-status_tracked-posttypes</code></dt>
 				<dd>
 					<p><?php _e( 'Return an associative array in this filter to activate tracking to your chosen post types. e.g:',
 							WP_REVSTATUS_SLUG ); ?></p>
 
-					<p>E.g.: <code>
-							add_filter( 'wp-revised-status_tracked-posttypes', function ( $i ) {
-							$i['post'] = 1;
+					<p>E.g.:</p>
+					<pre class="prettyprint linenums"><code class="lang-php">
+add_filter( 'wp-revised-status_tracked-posttypes', function ( $i ) {
+$i['post'] = 1;
 
-							return $i;
-							} );
-						</code>
-					</p>
+return $i;
+} );</code></pre>
 
 					<p><?php _e( 'Redundant with the previous filter', WP_REVSTATUS_SLUG ); ?></p></dd>
 				<dt><code>wp-revised-status_untracked-posttypes</code></dt>
@@ -66,7 +69,8 @@ class Options {
 							WP_REVSTATUS_SLUG ); ?></p>
 
 					<p>E.g.: </p>
-						<pre><code>add_filter( 'wp-revised-status_tracked-posttypes', 'my_theme_disable_tracking' );
+						<pre class="prettyprint linenums"><code class="lang-php">
+add_filter( 'wp-revised-status_tracked-posttypes', 'my_theme_disable_tracking' );
 function my_theme_disable_tracking($i) {
 	$i['post'] = 1;
 	return $i;
@@ -75,6 +79,9 @@ function my_theme_disable_tracking($i) {
 				</dd>
 			</dl>
 
+			<script
+				src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&amp;skin=desert&amp;lang=css"
+				defer="defer"></script>
 
 		</div>
 		<?php
@@ -90,40 +97,15 @@ function my_theme_disable_tracking($i) {
 	public function render_section_posttypes( $section ) {
 		$control = \RevisedStatus\Controller\Options::getInstance();
 
-		$enabled  = $control->getEnabled();
-		$disabled = $control->getDisabled();
+		$enabled  = ! empty( $control->getEnabled() );
+		$disabled = ! empty( $control->getDisabled() );
+		$trackAll = $control->getTrackAll();
 
-		// If there are posttypes enabled by use of the appropriate hook display a notice.
-		if ( ! empty( $enabled ) ) {
-			$types = [ ];
+		// If there are posttypes enabled or disabled by use of the appropriate hook display a user notice.
+		if ( $enabled || $disabled || $trackAll ) {
 			echo "<div id='message' class='updated'>"
-			     . __( 'Attention: Tracking for the following post-types has been enabled from a theme or a plugin:',
+			     . __( 'Attention: Settings for this plugin have been modified by use of actions hooks, done from within a theme or plugin:',
 					WP_REVSTATUS_SLUG );
-			foreach ( $enabled as $key => $val ) {
-
-				if ( ( $post_type = get_post_type_object( $key ) ) !== null ) {
-					$types[] = $post_type->labels->singular_name;
-				}
-
-			}
-			echo ' ' . implode( ', ', $types );
-			echo "</div>";
-		}
-
-		// If there are posttypes enabled by use of the appropriate hook display a warning.
-		if ( ! empty( $disabled ) ) {
-
-			echo "<div id='message' class='error'>"
-			     . __( 'Warning: Tracking for the following post-types has been disabled from a theme or a plugin:',
-					WP_REVSTATUS_SLUG );
-			$types = [ ];
-			foreach ( $disabled as $key => $val ) {
-
-				if ( ( $post_type = get_post_type_object( $key ) ) !== null ) {
-					$types[] = $post_type->labels->singular_name;
-				}
-			}
-			echo ' ' . implode( ', ', $types );
 			echo "</div>";
 		}
 	}

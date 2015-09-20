@@ -3,7 +3,7 @@
 **Tags:** revisions, publishing-status
 **Requires at least:** 4.0
 **Tested up to:** 4.2.2
-**Stable tag:** 0.7.0
+**Stable tag:** 0.8.0
 **Text Domain:** wp-revised-status
 **Domain Path:** /lang
 **License:** GPLv2 or later
@@ -79,10 +79,10 @@ No, sorry. PHP5.3 at a minimum, but at least 5.4 is recommended.
 ## Screenshots ##
 
 1. The new revision status metabox
-![1. The new revision status metabox](https://ps.w.org/revised-publishing-status/assets/png)
+![1. The new revision status metabox](https://ps.w.org/revised-publishing-status/assets/screenshot-1.png)
 
 2. Options page to enable publishing status history for registered post types.
-![2. Options page to enable publishing status history for registered post types.](https://ps.w.org/revised-publishing-status/assets/png)
+![2. Options page to enable publishing status history for registered post types.](https://ps.w.org/revised-publishing-status/assets/screenshot-2.png)
 
 
 ## Changelog ##
