@@ -2,7 +2,7 @@
 **Contributors:** yivi
 **Tags:** revisions, publishing-status
 **Requires at least:** 4.0
-**Tested up to:** 4.2.2
+**Tested up to:** 4.3.1
 **Stable tag:** 0.8.1
 **Text Domain:** wp-revised-status
 **Domain Path:** /lang
@@ -86,6 +86,10 @@ No, sorry. PHP5.3 at a minimum, but at least 5.4 is recommended.
 
 
 ## Changelog ##
+
+### 0.8.1 ###
+* Inline documentation in settings page
+* Show which settings have been set via filter hooks, and disable the gui for those.
 
 ### 0.7.0 ###
 * Minor refactoring of main plugin classes
