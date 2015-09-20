@@ -97,8 +97,11 @@ function my_theme_disable_tracking($i) {
 	public function render_section_posttypes( $section ) {
 		$control = \RevisedStatus\Controller\Options::getInstance();
 
-		$enabled  = ! empty( $control->getEnabled() );
-		$disabled = ! empty( $control->getDisabled() );
+		$enabled  = $control->getEnabled();
+		$disabled = $control->getDisabled();
+
+		$enabled  = ! empty( $enabled );
+		$disabled = ! empty( $disabled );
 		$trackAll = $control->getTrackAll();
 
 		// If there are posttypes enabled or disabled by use of the appropriate hook display a user notice.
