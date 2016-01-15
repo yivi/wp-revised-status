@@ -3,7 +3,7 @@
 **Tags:** revisions, publishing-status
 **Requires at least:** 4.0
 **Tested up to:** 4.4.1
-**Stable tag:** 0.8.2
+**Stable tag:** 0.8.3
 **Text Domain:** wp-revised-status
 **Domain Path:** /lang
 **License:** LGPL-3.0+
