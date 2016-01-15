@@ -43,8 +43,8 @@ class RevisionMetabox {
 		// but this particular posttype isn't disabled explicitly
 		if ( isset( $options[ 'revise_' . $screen->id ] )
 		     || ( $options['track_all_posttypes'] &&
-		          ( is_set( $options['disabled'] ) && is_array( $options['disabled'] ) && ! in_array( $screen->id, $options['disabled'] ) ) ||
-		          ! is_set( $options['disabled'] ) || ! is_array( $options['disabled'] ) )
+		          ( isset( $options['disabled'] ) && is_array( $options['disabled'] ) && ! in_array( $screen->id, $options['disabled'] ) ) ||
+		          ! isset( $options['disabled'] ) || ! is_array( $options['disabled'] ) )
 		) {
 			add_meta_box( 'wpsr_status_revised',
 				__( 'Revisions (with publication status history)', WP_REVSTATUS_SLUG ),
