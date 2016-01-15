@@ -36,8 +36,15 @@ class RevisionMetabox {
 
 		$screen = get_current_screen();
 
+		// Display the our metabox instad of the default one if:
+		// * revise_options for the current post type is enabled
+		// OR
+		// if track all posttypes is enabled
+		// but this particular posttype isn't disabled explicitly
 		if ( isset( $options[ 'revise_' . $screen->id ] )
-		     || ( $options['track_all_posttypes'] && ! in_array( $screen->id, $options['disabled'] ) )
+		     || ( $options['track_all_posttypes'] &&
+		          ( is_set( $options['disabled'] ) && is_array( $options['disabled'] ) && ! in_array( $screen->id, $options['disabled'] ) ) ||
+		          ! is_set( $options['disabled'] ) || ! is_array( $options['disabled'] ) )
 		) {
 			add_meta_box( 'wpsr_status_revised',
 				__( 'Revisions (with publication status history)', WP_REVSTATUS_SLUG ),
@@ -62,7 +69,7 @@ class RevisionMetabox {
 	 *
 	 *
 	 * @param int|WP_Post $post_id Optional. Post ID or WP_Post object. Default is global $post.
-	 * @param string      $type    'all' (default), 'revision' or 'autosave'
+	 * @param string      $type 'all' (default), 'revision' or 'autosave'
 	 *
 	 * @return null
 	 */
@@ -101,7 +108,7 @@ class RevisionMetabox {
 	 * Retrieve formatted date timestamp of a revision (linked to that revisions's page).
 	 *
 	 * @param int|object $revision Revision ID or revision object.
-	 * @param bool       $link     Optional, default is true. Link to revisions's page?
+	 * @param bool       $link Optional, default is true. Link to revisions's page?
 	 *
 	 * @return string gravatar, user, i18n formatted datetimestamp or localized 'Current Revision'.
 	 */
