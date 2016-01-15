@@ -3,7 +3,7 @@
  * Plugin Name: Revised Publishing Status
  * Plugin URI: http://www.yivoff.com/plugins/revised-status
  * Description: Saves the publihed status (publish, draft, pending) alongside revision history.
- * Version: 0.8.1
+ * Version: 0.8.2
  * Author: yivi
  * Text Domain: wp-revised-status
  * Domain Path: /lang

@@ -2,12 +2,12 @@
 Contributors: yivi
 Tags: revisions, publishing-status
 Requires at least: 4.0
-Tested up to: 4.3.1
-Stable tag: 0.8.1
+Tested up to: 4.4.1
+Stable tag: 0.8.2
 Text Domain: wp-revised-status
 Domain Path: /lang
-License: GPLv2 or later
-License URI: http//www.gnu.org/licenses/gpl-2.0.html
+License: LGPL-3.0+
+License URI: http://www.gnu.org/licenses/lgpl-3.0.en.html
 
 
 Saves and restores publishing status in post revisions, replacing the default Revisions metabox with a modified metabox with pub status.
